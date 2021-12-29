@@ -1,0 +1,58 @@
+﻿<Window
+    x:Class="Todos.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+    mc:Ignorable="d"
+    md:DialogServiceViews.IsRegistered="True"
+    Title="Todos"
+    WindowStartupLocation="CenterScreen"
+    Width="400"
+    Height="300"
+    ResizeMode="NoResize"
+    DataContext="{Binding Source={StaticResource Locator}, Path=MainWindow}">
+
+    <Window.Resources>
+        <ResourceDictionary Source="ApplicationResources.xaml" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListBox ItemsSource="{Binding Todos}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox IsChecked="{Binding IsCompleted}">
+                        <CheckBox.Resources>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                        <Setter Property="Opacity" Value="0.5" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </CheckBox.Resources>
+                        <TextBlock Text="{Binding Name}"/>
+                    </CheckBox>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <UniformGrid
+            Grid.Row="1"
+            Columns="2">
+            <Button
+                Content="Add..."
+                Command="{Binding AddCommand}" />
+            <Button
+                Content="Clear completed..."
+                Command="{Binding ClearCompletedCommand}" />
+        </UniformGrid>
+
+    </Grid>
+</Window>
